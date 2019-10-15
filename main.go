@@ -139,6 +139,13 @@ func parseReqParam(param string, f *flag.FlagSet, pkgMap map[string]string) erro
 				}
 				continue
 			}
+			if spec[0] == "allow_unknown_fields" {
+				err := f.Set(spec[0], "true")
+				if err != nil {
+					return fmt.Errorf("Cannot set flag %s: %v", p, err)
+				}
+				continue
+			}
 			err := f.Set(spec[0], "")
 			if err != nil {
 				return fmt.Errorf("Cannot set flag %s: %v", p, err)
