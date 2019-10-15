@@ -12,15 +12,16 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/codegenerator"
 	"github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway/descriptor"
 
-	"github.com/mitchellh/protoc-gen-go-json/gen"
+	"github.com/l-vitaly/protoc-gen-go-json/gen"
 )
 
 var (
-	importPrefix = flag.String("import_prefix", "", "prefix to be added to go package paths for imported proto files")
-	file         = flag.String("file", "-", "where to load data from")
-	enumsAsInts  = flag.Bool("enums_as_ints", false, "render enums as integers as opposed to strings")
-	emitDefaults = flag.Bool("emit_defaults", false, "render fields with zero values")
-	origName     = flag.Bool("orig_name", false, "use original (.proto) name for fields")
+	importPrefix       = flag.String("import_prefix", "", "prefix to be added to go package paths for imported proto files")
+	file               = flag.String("file", "-", "where to load data from")
+	enumsAsInts        = flag.Bool("enums_as_ints", false, "render enums as integers as opposed to strings")
+	emitDefaults       = flag.Bool("emit_defaults", false, "render fields with zero values")
+	origName           = flag.Bool("orig_name", false, "use original (.proto) name for fields")
+	allowUnknownFields = flag.Bool("allow_unknown_fields", false, "allow messages to contain unknown fields")
 )
 
 func main() {
@@ -60,9 +61,10 @@ func main() {
 	}
 
 	g := gen.New(reg, gen.Options{
-		EnumsAsInts:  *enumsAsInts,
-		EmitDefaults: *emitDefaults,
-		OrigName:     *origName,
+		EnumsAsInts:        *enumsAsInts,
+		EmitDefaults:       *emitDefaults,
+		OrigName:           *origName,
+		AllowUnknownFields: *allowUnknownFields,
 	})
 	if err := reg.Load(req); err != nil {
 		emitError(err)
